@@ -1,0 +1,228 @@
+═══════════════════════════════════════════════════════════════
+🚀 NASA KOSMOS BOT — RENDER.COM QO'LLANMASI 🚀
+═══════════════════════════════════════════════════════════════
+
+📌 BOT NIMA QILADI?
+───────────────────────────────────────────────
+NASA APOD (Astronomy Picture of the Day) API
+orqali har 5 daqiqada 10 ta tartibli kosmik
+rasm va qiziqarli faktni Telegram kanalingizga
+avtomatik yuborib turadi.
+
+✨ Imkoniyatlari:
+  • 🌌 Avtomatik post (har 5 daq, 10 ta rasm)
+  • 📅 Tartibli — kechagi sanadan orqaga
+  • 🔁 Takrorlanmaydi (DB'da kuzatiladi)
+  • 📢 Majburiy obuna kanallari
+  • 👑 Admin panel
+  • 🌐 Render.com'ga avtomatik webhook
+  • 💾 Yengil DB (100 MB Free planga moslangan)
+  • 🪶 NASA API'ga yumshoq yuk (rate limit'ga
+     urilmaydi: so'rovlar orasida 1.5s pauza,
+     503 xatosida avtomatik 4 marta qaytadan
+     urinish — eksponensial backoff bilan)
+
+
+═══════════════════════════════════════════════════════════════
+1️⃣ TAYYORGARLIK — 5 DAQIQA
+═══════════════════════════════════════════════════════════════
+
+🤖 BOT TOKEN
+1. Telegram'da @BotFather → /newbot
+2. Bot nomi va username kiriting
+3. TOKEN'ni saqlang
+   Misol: 1234567890:ABCdefGHIjklMNOpqrsTUVwxyz
+
+🆔 TELEGRAM ID
+   @userinfobot ga /start yuboring →
+   ID raqamingizni nusxalang
+
+📢 KANAL TAYYORLASH
+1. Yangi Telegram kanal yarating
+2. Kanal sozlamalari → Administratorlar
+3. Botingizni admin qiling, "Post yuborish"
+   huquqini bering ✅
+4. Kanal username'ini saqlang
+   Masalan: @kosmos_kanal
+
+🛰 NASA API KALITI
+1. https://api.nasa.gov → "Get Started"
+2. Ism + email kiriting
+3. Email orqali kalit keladi
+
+
+═══════════════════════════════════════════════════════════════
+2️⃣ GITHUB'GA YUKLASH
+═══════════════════════════════════════════════════════════════
+
+1. github.com'da yangi repository yarating
+   (Public yoki Private — farqi yo'q)
+
+2. Loyiha papkasida:
+
+   git init
+   git add .
+   git commit -m "NASA Kosmos Bot"
+   git branch -M main
+   git remote add origin \
+     https://github.com/USERNAME/REPO.git
+   git push -u origin main
+
+
+═══════════════════════════════════════════════════════════════
+3️⃣ RENDER.COM POSTGRESQL (BEPUL — 100 MB)
+═══════════════════════════════════════════════════════════════
+
+1. https://render.com → ro'yxatdan o'ting
+   (GitHub orqali kirish tavsiya etiladi)
+
+2. Dashboard → "+ New" → "PostgreSQL"
+
+3. Sozlamalar:
+   ┌───────────────────────────────────────┐
+   │ Name:     nasa-bot-db                 │
+   │ Database: nasa_bot                    │
+   │ Region:   Frankfurt                   │
+   │ Plan:     Free                        │
+   └───────────────────────────────────────┘
+
+4. "Create Database" → 1-2 daqiqa kuting
+
+5. Yaratilgach, "Connections" bo'limidan:
+   ┌───────────────────────────────────────┐
+   │ ⚠️  INTERNAL Database URL'ni nusxalang │
+   │     (External URL emas!)              │
+   │  postgresql://user:pass@host/db       │
+   └───────────────────────────────────────┘
+
+📊 NIMA UCHUN 100 MB YETARLI?
+   • Bir post = ~210 byte
+     (sana 10 belgi + URL ~200 belgi)
+   • 2880 post/kun × 210 byte = ~600 KB/kun
+   • 100 MB = 5-6 oylik post
+   • NASA APOD jami ~11000 kun = ~2.3 MB
+
+
+═══════════════════════════════════════════════════════════════
+4️⃣ RENDER.COM WEB SERVICE
+═══════════════════════════════════════════════════════════════
+
+1. Dashboard → "+ New" → "Web Service"
+
+2. "Build and deploy from a Git repository"
+
+3. GitHub'dagi nasa-kosmos-bot repository'ni
+   tanlang
+
+4. Sozlamalar:
+   ┌───────────────────────────────────────┐
+   │ Name:           nasa-kosmos-bot       │
+   │ Region:         Frankfurt (DB BILAN   │
+   │                  BIR XIL!)            │
+   │ Branch:         main                  │
+   │ Runtime:        Python 3              │
+   │ Build Command:  pip install -r        │
+   │                  requirements.txt     │
+   │ Start Command:  python main.py        │
+   │ Plan:           Free                  │
+   └───────────────────────────────────────┘
+
+5. "Environment Variables" bo'limiga 8 ta
+   o'zgaruvchi qo'shing:
+
+   ┌──────────────────────┬─────────────────┐
+   │ KEY                  │ VALUE           │
+   ├──────────────────────┼─────────────────┤
+   │ TELEGRAM_TOKEN       │ <BotFather>     │
+   │ ADMIN_ID             │ <Telegram ID>   │
+   │ CHANNEL_ID           │ @kanal_nomi     │
+   │ NASA_API_KEY         │ <NASA kalit>    │
+   │ DATABASE_URL         │ <Internal URL>  │
+   │ REQUIRED_CHANNELS    │ @k1,@k2  yoki   │
+   │                      │  bo'sh          │
+   │ POST_INTERVAL_       │ 5               │
+   │  MINUTES             │                 │
+   │ POSTS_PER_BATCH      │ 10              │
+   └──────────────────────┴─────────────────┘
+
+   ⚠️  RENDER_EXTERNAL_URL'ni KIRITMANG —
+       Render uni avtomatik beradi va bot
+       webhook'ni o'zi sozlaydi.
+
+6. "Create Web Service" → 2-3 daqiqada bot
+   ishga tushadi va birinchi 10 ta postni
+   kanalingizga yuboradi 🚀
+
+
+═══════════════════════════════════════════════════════════════
+5️⃣ FREE PLAN'DA UYG'OQ TUTISH
+═══════════════════════════════════════════════════════════════
+
+Render Free plan'da bot 15 daqiqa harakatsiz
+bo'lsa "uxlab" qoladi. Yechim:
+
+1. https://uptimerobot.com → bepul akkaunt
+2. "Add New Monitor" → HTTP(s)
+3. URL: https://nasa-kosmos-bot.onrender.com
+4. Interval: 5 daqiqa
+5. Bot 24/7 ishlayveradi
+
+
+═══════════════════════════════════════════════════════════════
+6️⃣ ADMIN KOMANDALARI (Telegram'da)
+═══════════════════════════════════════════════════════════════
+
+  /admin              → statistika paneli
+  /addchannel @kanal  → majburiy kanal qo'shish
+  /delchannel @kanal  → majburiy kanal o'chirish
+  /channels           → barcha kanallar ro'yxati
+  /postnow            → hozir post yuborish (test)
+
+
+═══════════════════════════════════════════════════════════════
+7️⃣ TEZ MUAMMOLARNI HAL QILISH
+═══════════════════════════════════════════════════════════════
+
+❌ "InvalidToken" → TELEGRAM_TOKEN noto'g'ri
+
+❌ Postlar kanalga kelmayapti
+   → CHANNEL_ID @ bilan kiritilganmi?
+   → Bot kanalda ADMIN'mi?
+
+❌ "could not connect to server" (DB)
+   → INTERNAL Database URL'ni ishlatdingizmi?
+   → Web Service va DB bir REGIONDA'mi?
+
+❌ Bot uxlab qoladi
+   → UptimeRobot ulang (5-bo'lim)
+
+❌ DB 100 MB to'lib qoldi
+   → Render dashboard → DB → "Shell" oching:
+     DELETE FROM posted_items
+       WHERE nasa_date < '2020-01-01';
+
+
+═══════════════════════════════════════════════════════════════
+8️⃣ LOYIHA STRUKTURASI
+═══════════════════════════════════════════════════════════════
+
+  📁 nasa-kosmos-bot/
+  ├── main.py              ← entry point
+  ├── requirements.txt     ← Python kutubxonalari
+  ├── render.yaml          ← Render config
+  ├── Procfile             ← process komandasi
+  ├── runtime.txt          ← Python 3.11.9
+  ├── BOT_QURISH_QOLLANMA.txt
+  └── bot/
+      ├── config.py        ← ENV o'qish
+      ├── db.py            ← PostgreSQL (yengil)
+      ├── nasa.py          ← NASA API (rate-limited)
+      ├── scheduler.py     ← har 5 daq poster
+      ├── handlers.py      ← /start, /admin
+      ├── keyboards.py     ← inline tugmalar
+      └── app.py           ← Flask + webhook
+
+
+═══════════════════════════════════════════════════════════════
+🎉 OMAD! KOSMOS SIZNI KUTMOQDA! 🌌🚀✨
+═══════════════════════════════════════════════════════════════
